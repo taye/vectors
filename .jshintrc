@@ -1,0 +1,7 @@
+{
+    "strict": false,
+    "validthis":true,
+    "browser":true,
+    "rhino":true,
+    "curly":true
+}
