@@ -60,7 +60,7 @@
             }), this.dupliverts);
     };
 
-    VectorSet.prototype.rotateBy = function (angle) {
+    VectorSet.prototype.rotate = function (angle) {
         return new VectorSet(this.map(function (vector) {
                 return vector.rotateBy(angle);
             }), this.dupliverts);
@@ -70,11 +70,12 @@
         return new VectorSet(global.interpolate(this, steps));
     };
 
-    VectorSet.prototype.animate = function (points, duration) {
+    VectorSet.prototype.animate = function (options) {
         var i,
             len;
 
-        return new vectors.animate.Animation(this, points, duration);
+        options.object = this;
+        return new vectors.animate.Animation(options);
     };
 
     VectorSet.prototype.duplivert = function (duplicant) {

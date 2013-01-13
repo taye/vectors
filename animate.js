@@ -31,30 +31,51 @@
         interval = 40,
         timeout;
 
-    function Animation (object, points, duration, startTime) {
+    function Animation (options) {
         if (!(this instanceof Animation)) {
-            return new Animation(object, points, duration, startTime);
+            return new Animation(options);
         }
         if (!running) {
             start();
         }
 
-        this.object = object;
-        this.points = points;
+        this.object = options.object;
+        this.translation = options.translation || [new Vector()];
+        this.scale = options.scale || [1];
+        this.rotation = options.rotation || [0];
 
-        this.start = startTime || time.current;
-        this.duration = duration || 1200;
+        this.start = options.start|| time.current;
+        this.duration = options.duration || 1200;
         this.end = this.start + this.duration;
 
         animations.push(this);
     }
 
     Animation.prototype = {
-        animate: function (points, duration) {
-            return new Animation(this.object, points, duration, this.end);
+        animate: function (options) {
+            options = options || {};
+
+            options.scale = options.scale || [1];
+            options.rotation = options.rotation || [0];
+            options.translation = options.translation || [new Vector()];
+
+            // Start next animation at the end of this one
+            options.scale = options.scale.map(function (scalar) {
+                    return scalar * this.scale[this.scale.length - 1];
+                }, this);
+
+            options.rotation = options.rotation.map(function (angle) {
+                    return angle + this.rotation[this.rotation.length - 1];
+                }, this);
+
+            options.translation = vectors.VectorSet(options.translation).translate(this.translation[this.translation.length - 1])
+            options.object = this.object;
+
+            options.start = this.end;
+            return new Animation(options);
         },
         interpolate: function (steps) {
-            this.points = window.interpolate(this.points, steps);
+            this.translation = vectors.interpolate(this.translation, steps);
             return this;
         }
     };
@@ -97,10 +118,14 @@
 
             if (time.current > anim.start) {
                 var progress = (time.current - anim.start) / anim.duration,
-                    index = Math.floor(anim.points.length * progress);
+                    scaleIndex = Math.floor(anim.scale.length * progress),
+                    rotIndex = Math.floor(anim.rotation.length * progress),
+                    transIndex = Math.floor(anim.translation.length * progress);
 
                 anim.object
-                    .translate(anim.points[index])
+                    .scale(anim.scale[scaleIndex])
+                    .rotate(anim.rotation[rotIndex])
+                    .translate(anim.translation[transIndex])
                     .draw();
             }
         }

@@ -60,4 +60,4 @@
 
     vectors.join = join;
     vectors.interpolate = interpolate;
-} (this));
+} (vectors));

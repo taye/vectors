@@ -53,11 +53,13 @@ Animate vectors
 
 ```javascript
 vectors.star(4)
-    .scale(10)
-    .animate(vectors.star(6)
-            .scale(300)
-            .translate(Vector(300, 300), 5000)
-        .interpolate(100);
+    .animate({
+            translation: largeStar.translate(Vector(300, 300)),
+            duration: 2000 })
+        .interpolate(100)
+        .animate({
+            scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+            duration: 1000 });
 ```
 
 ## splode.js
@@ -75,9 +77,10 @@ vectors.star(2) instanceof vectors.VectorSet === true // true
 ```
 
 ## Todo
- - animate scale and rotation
- - Fix splode
- - Splode using interpolate
- - Splode draw method with progress argument
+ - interpolate scalars
+ - fix splode
+ - splode using interpolate
+ - splode draw method with progress argument
  - duplivert/animate splosions
+ - ~~animate scale and rotation~~
 
