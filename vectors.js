@@ -54,7 +54,10 @@
             }), this.dupliverts);
     };
 
-    VectorSet.prototype.translate = function (transVector) {
+    VectorSet.prototype.translate = function (transVector, y) {
+        if (typeof transVector === 'number') {
+            transVector = new Vector(transVector, y);
+        }
         return new VectorSet(this.map(function (vector) {
                 return vector.plus(transVector);
             }), this.dupliverts);
@@ -71,9 +74,6 @@
     };
 
     VectorSet.prototype.animate = function (options) {
-        var i,
-            len;
-
         options.object = this;
         return new vectors.animate.Animation(options);
     };
