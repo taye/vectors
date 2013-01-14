@@ -54,23 +54,15 @@
     Animation.prototype = {
         animate: function (options) {
             options = options || {};
-
-            options.scale = options.scale || [1];
-            options.rotation = options.rotation || [0];
-            options.translation = options.translation || [new Vector()];
-
-            // Start next animation at the end of this one
-            options.scale = options.scale.map(function (scalar) {
-                    return scalar * this.scale[this.scale.length - 1];
-                }, this);
-
-            options.rotation = options.rotation.map(function (angle) {
-                    return angle + this.rotation[this.rotation.length - 1];
-                }, this);
-
-            options.translation = vectors.VectorSet(options.translation).translate(this.translation[this.translation.length - 1])
             options.object = this.object;
 
+            // If an animation property is not defined,
+            // use the final value of this animation
+            options.scale = options.scale || [this.scale[this.scale.length - 1]];
+            options.rotation = options.rotation || [this.rotation[this.rotation.length - 1]];
+            options.translation = options.translation || [this.translation[this.translation.length - 1]];
+
+            // Start next animation at the end of this one
             options.start = this.end;
             return new Animation(options);
         },
