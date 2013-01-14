@@ -17,11 +17,13 @@ v = v.unitVector()
 //  .etc()
 ```
 
-## star.js
-Make stars
+## shapes.js
+Make shapes
 
 ```javascript
-vectors.star(numberofPoints, inset, rotationRadians);
+vectors.polygon(sides, rotation)
+vectors.star(numberofPoints, inset, rotation);
+vectors.circle(radius);
 ```
 
 ## interpolate.js
@@ -58,8 +60,8 @@ vectors.star(4)
             duration: 2000 })
         .interpolate(100)
         .animate({
-            scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-            duration: 1000 });
+            scale: vectors.interpolate([0.1, 3], 70);
+            duration: 3000 });
 ```
 
 ## splode.js
@@ -75,12 +77,13 @@ Keeps things together and gives us the VectorSet
 ```javascript
 vectors.star(2) instanceof vectors.VectorSet === true // true
 ```
-
+________________________________________
 ## Todo
- - interpolate scalars
+ - **fix scalar interpolation**
  - fix splode
  - splode using interpolate
  - splode draw method with progress argument
  - duplivert/animate splosions
  - ~~animate scale and rotation~~
+ - ~~interpolate scalars~~
 
