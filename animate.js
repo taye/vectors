@@ -76,6 +76,8 @@
         },
         interpolate: function (steps) {
             this.translation = vectors.interpolate(this.translation, steps);
+            this.scale = vectors.interpolate(this.scale, steps);
+            this.rotation = vectors.interpolate(this.rotation, steps);
             return this;
         }
     };
