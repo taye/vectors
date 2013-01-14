@@ -67,7 +67,7 @@
     };
 
     VectorSet.prototype.interpolate = function (steps) {
-        return new VectorSet(global.interpolate(this, steps));
+        return new VectorSet(vectors.interpolate(this, steps));
     };
 
     VectorSet.prototype.animate = function (options) {
