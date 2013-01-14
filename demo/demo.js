@@ -100,27 +100,35 @@ var smallStar = vectors.star(5, 0.38, Math.PI / 2).scale(50),
     demoElement = document.createElement('div');
 
 
-function demo (event) {
-    var smallStar = vectors.star(5, 0.38, Math.PI / 2).scale(50),
-        largeStar = vectors.star(6).scale(-250);
+function demo () {
+    var smallStar = vectors.star(5, 0.38, 0.5 * Math.PI).scale(50),
+        largeStar = smallStar.scale(5);
 
     smallStar
         .animate({
                 translation: largeStar.translate(Vector(300, 300)),
                 duration: 2000 })
-            .interpolate(100)
+            .interpolate(50)
             .animate({
-                scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-                duration: 1000 });
+                    scale: [1, 5],
+                    rotation: [0, 2 * Math.PI],
+                    duration: 3000 })
+                .interpolate(100);
 }
 
 function starMove (event) {
     if (vectors.animate.running()) {
         return;
     }
+    var x = event.pageX - vectors.canvas.element.offsetLeft,
+        y = event.pageY - vectors.canvas.element.offsetTop;
+
     event = (event.touches)? event.touches[0]: event;
     vectors.canvas.clear();
-    smallStar.translate(Vector(event.pageX, event.pageY)).draw();
+    smallStar
+        .scale(1.5 * (1 - y / window.innerHeight))
+        .rotate(4 * Math.PI * x / window.innerWidth)
+        .translate(Vector(x, y)).draw();
 }
 
 events.add(document, 'DOMContentLoaded', function (event) {
@@ -142,3 +150,4 @@ events.add(document, 'DOMContentLoaded', function (event) {
     events.add(demoElement, 'click', demo);
     events.add(demoElement, 'touchStart', demo);
 });
+
