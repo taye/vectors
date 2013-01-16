@@ -45,7 +45,7 @@
         this.rotation = options.rotation || [0];
 
         this.start = options.start|| time.current;
-        this.duration = options.duration || 1200;
+        this.duration = typeof options.duration === 'number'? options.duration: Infinity;
         this.end = this.start + this.duration;
 
         animations.push(this);
@@ -63,7 +63,7 @@
             options.translation = options.translation || [this.translation[this.translation.length - 1]];
 
             // Start next animation at the end of this one
-            options.start = this.end;
+            options.start = this.duration === Infinity? this.start: this.end;
             return new Animation(options);
         },
         interpolate: function (steps) {
@@ -117,7 +117,8 @@
             }
 
             if (time.current > anim.start) {
-                var progress = (time.current - anim.start) / anim.duration,
+                var progress = (time.current - anim.start) / (anim.duration === Infinity? 1: anim.duration),
+
                     scale = (typeof anim.scale === 'function'?
                              anim.scale(progress)
                              : anim.scale[Math.floor(anim.scale.length * progress)]),
@@ -134,7 +135,7 @@
                     .scale(scale)
                     .rotate(rotation)
                     .translate(translation)
-                    .draw();
+                    .draw(progress);
             }
         }
     }
