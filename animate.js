@@ -67,9 +67,15 @@
             return new Animation(options);
         },
         interpolate: function (steps) {
-            this.translation = vectors.interpolate(this.translation, steps);
-            this.scale = vectors.interpolate(this.scale, steps);
-            this.rotation = vectors.interpolate(this.rotation, steps);
+            this.scale = this.scale instanceof Array?
+                vectors.interpolate(this.scale, steps)
+                : this.scale;
+            this.rotation = this.rotation instanceof Array?
+                vectors.interpolate(this.rotation, steps)
+                : this.rotation;
+            this.translation = this.translation instanceof Array?
+                vectors.interpolate(this.translation, steps)
+                : this.translation;
             return this;
         }
     };
@@ -112,14 +118,22 @@
 
             if (time.current > anim.start) {
                 var progress = (time.current - anim.start) / anim.duration,
-                    scaleIndex = Math.floor(anim.scale.length * progress),
-                    rotIndex = Math.floor(anim.rotation.length * progress),
-                    transIndex = Math.floor(anim.translation.length * progress);
+                    scale = (typeof anim.scale === 'function'?
+                             anim.scale(progress)
+                             : anim.scale[Math.floor(anim.scale.length * progress)]),
+
+                    rotation = (typeof anim.rotation === 'function'?
+                             anim.rotation(progress)
+                             : anim.rotation[Math.floor(anim.rotation.length * progress)]),
+
+                    translation = (typeof anim.translation === 'function'?
+                             anim.translation(progress)
+                             : anim.translation[Math.floor(anim.translation.length * progress)]);
 
                 anim.object
-                    .scale(anim.scale[scaleIndex])
-                    .rotate(anim.rotation[rotIndex])
-                    .translate(anim.translation[transIndex])
+                    .scale(scale)
+                    .rotate(rotation)
+                    .translate(translation)
                     .draw();
             }
         }
