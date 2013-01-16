@@ -120,10 +120,11 @@ function starMove (event) {
     if (vectors.animate.running()) {
         return;
     }
+    event = (event.touches)? event.touches[0]: event;
+
     var x = event.pageX - vectors.canvas.element.offsetLeft,
         y = event.pageY - vectors.canvas.element.offsetTop;
 
-    event = (event.touches)? event.touches[0]: event;
     vectors.canvas.clear();
     smallStar
         .scale(1.5 * (1 - y / window.innerHeight))
