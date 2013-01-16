@@ -1,0 +1,9 @@
+pre {
+    border: solid transparent 4px;
+}
+
+pre:hover {
+    border: solid gray 4px;
+}
+
+
