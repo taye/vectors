@@ -121,15 +121,15 @@
 
                     scale = (typeof anim.scale === 'function'?
                              anim.scale(progress)
-                             : anim.scale[Math.floor(anim.scale.length * progress)]),
+                             : anim.scale[Math.floor(anim.duration === Infinity? 0: anim.scale.length * progress)]),
 
                     rotation = (typeof anim.rotation === 'function'?
                              anim.rotation(progress)
-                             : anim.rotation[Math.floor(anim.rotation.length * progress)]),
+                             : anim.rotation[Math.floor(anim.duration === Infinity? 0: anim.rotation.length * progress)]),
 
                     translation = (typeof anim.translation === 'function'?
                              anim.translation(progress)
-                             : anim.translation[Math.floor(anim.translation.length * progress)]);
+                             : anim.translation[Math.floor(anim.duration === Infinity? 0: anim.translation.length * progress)]);
 
                 anim.object
                     .scale(scale)
