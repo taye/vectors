@@ -74,7 +74,7 @@
     };
 
     VectorSet.prototype.animate = function (options) {
-        options.object = this;
+        (options = options || {}).object = this;
         return new vectors.animate.Animation(options);
     };
 

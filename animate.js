@@ -39,7 +39,7 @@
             start();
         }
 
-        this.object = options.object;
+        this.object = options.object || {};
         this.translation = options.translation || [new Vector()];
         this.scale = options.scale || [1];
         this.rotation = options.rotation || [0];
