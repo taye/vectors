@@ -67,6 +67,9 @@
             return new Animation(options);
         },
         interpolate: function (steps) {
+            if (this.duration === Infinity) {
+                return this;
+            }
             this.scale = this.scale instanceof Array?
                 vectors.interpolate(this.scale, steps)
                 : this.scale;
