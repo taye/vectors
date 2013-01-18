@@ -1,3 +1,5 @@
+'use strict';
+
 var smallStar = vectors.star(5, 0.38, Math.PI / 2).scale(50),
     largeStar = vectors.star(6).scale(250),
     events = (function () {
@@ -97,8 +99,30 @@ var smallStar = vectors.star(5, 0.38, Math.PI / 2).scale(50),
             removeAll: removeAll
         };
     }()),
-    demoElement = document.createElement('div');
+    demoElement = document.createElement('div'),
+    canvas = vectors.canvas,
+    supportsTouch = 'createTouch' in document,
+    pageX = 0,
+    pageY = 0,
+    
+    interval = 2000;
 
+function animScale (progress) {
+    progress = (progress % interval) / interval;
+
+    return 0.0 + 1.0 * Math.sin(progress * 1 * Math.PI);
+}
+
+function animRot (Progress) {
+    return 4 * Math.PI * pageX / window.innerWidth;
+}
+
+function animTrans (progress) {
+    progress = (progress % interval) / interval;
+
+    return Vector(pageX - canvas.element.offsetLeft + 30 * Math.sin(progress * 2 * Math.PI),
+                  pageY - canvas.element.offsetTop);
+}
 
 function demo () {
     var smallStar = vectors.star(5, 0.38, 0.5 * Math.PI).scale(50),
@@ -116,20 +140,12 @@ function demo () {
                 .interpolate(100);
 }
 
-function starMove (event) {
-    if (vectors.animate.running()) {
-        return;
+function setXY (event) {
+    if (supportsTouch) {
+        event = event.touches[0];
     }
-    event = (event.touches)? event.touches[0]: event;
-
-    var x = event.pageX - vectors.canvas.element.offsetLeft,
-        y = event.pageY - vectors.canvas.element.offsetTop;
-
-    vectors.canvas.clear();
-    smallStar
-        .scale(1.5 * (1 - y / window.innerHeight))
-        .rotate(4 * Math.PI * x / window.innerWidth)
-        .translate(Vector(x, y)).draw();
+    pageX = event.pageX;
+    pageY = event.pageY;
 }
 
 events.add(document, 'DOMContentLoaded', function (event) {
@@ -145,10 +161,16 @@ events.add(document, 'DOMContentLoaded', function (event) {
 
     document.body.appendChild(demoElement);
 
-    events.add(document, 'mousemove', starMove);
-    events.add(document, 'touchmove', starMove);
+    events.add(document, 'mousemove', setXY);
+    events.add(document, 'touchmove', setXY);
 
     events.add(demoElement, 'click', demo);
     events.add(demoElement, 'touchStart', demo);
+
+    smallStar.animate({
+        scale: animScale,
+        rotation: animRot,
+        translation: animTrans
+    });
 });
 
