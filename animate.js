@@ -84,6 +84,7 @@
     };
 
     function start () {
+        time.current = new Date().getTime();
         updateTime();
 
         running = true;
