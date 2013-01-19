@@ -48,6 +48,10 @@
         this.duration = typeof options.duration === 'number'? options.duration: Infinity;
         this.end = this.start + this.duration;
 
+        this.onEnd = typeof options.onEnd === 'function'
+            ? options.onEnd
+            : null;
+
         animations.push(this);
     }
 
@@ -80,6 +84,12 @@
                 vectors.interpolate(this.translation, steps)
                 : this.translation;
             return this;
+        },
+        kill: function () {
+            if (this.onEnd) {
+                this.onEnd(time.current);
+            }
+            animations.splice(animations.indexOf(this), 1);
         }
     };
 
@@ -111,7 +121,7 @@
             anim = animations[i];
 
             if (time.current >= anim.end) {
-                animations.splice(i, 1);
+                anim.kill();
 
                 if (!animations.length) {
                     vectors.canvas.clear();
@@ -122,7 +132,7 @@
 
             if (time.current > anim.start) {
                 var progress = (time.current - anim.start) / (anim.duration === Infinity? 1: anim.duration),
-
+                
                     scale = (typeof anim.scale === 'function'?
                              anim.scale(progress)
                              : anim.scale[Math.floor(anim.duration === Infinity? 0: anim.scale.length * progress)]),
@@ -158,6 +168,15 @@
         time.interval = time.current - time.previous;
     }
 
+    function killall () {
+        pause();
+        vectors.canvas.clear();
+
+        while(animations.length) {
+            animations[0].kill();
+        }
+    }
+
     vectors.animate = {
         Animation: Animation,
         
@@ -165,6 +184,7 @@
         pause: pause,
         running: function () {
             return running;
-        }
+        },
+        killall: killall
     };
 }(vectors));
