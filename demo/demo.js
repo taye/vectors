@@ -110,7 +110,7 @@ var smallStar = vectors.star(5, 0.38, Math.PI / 2).scale(50),
 function animScale (progress) {
     progress = (progress % interval) / interval;
 
-    return 0.0 + 1.0 * Math.sin(progress * 1 * Math.PI);
+    return 1 + 0.5 * Math.sin(progress * 2 * Math.PI);
 }
 
 function animRot (Progress) {
@@ -120,8 +120,8 @@ function animRot (Progress) {
 function animTrans (progress) {
     progress = (progress % interval) / interval;
 
-    return Vector(pageX - canvas.element.offsetLeft + 30 * Math.sin(progress * 2 * Math.PI),
-                  pageY - canvas.element.offsetTop);
+    return Vector(pageX - canvas.element.offsetLeft + 30 * (Math.sin(progress * 2 * Math.PI)),
+                  pageY - canvas.element.offsetTop + 30 * (Math.cos(progress * 2 * Math.PI)) );
 }
 
 function demo () {
