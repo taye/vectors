@@ -62,6 +62,16 @@ vectors.star(4)
         .animate({
             scale: vectors.interpolate([0.1, 3], 70);
             duration: 3000 });
+
+vectors.polygon(3)
+    .animate({
+            duration: Infinity,
+            scale: function (progress) {
+                progress = (progress % 2500) / 2500;
+                return 100 * (1 + Math.sin(progress * 2 * Math.PI));
+            },
+            translation: [Vector(200, 200)]
+        });
 ```
 
 ## splode.js
