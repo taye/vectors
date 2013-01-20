@@ -86,10 +86,10 @@
             return this;
         },
         kill: function () {
+            animations.splice(animations.indexOf(this), 1);
             if (this.onEnd) {
                 this.onEnd(time.current);
             }
-            animations.splice(animations.indexOf(this), 1);
         }
     };
 
