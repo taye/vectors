@@ -127,6 +127,9 @@
                 suffix,
                 ',\t',
                 this[i].y.toFixed(precision),
+                suffix,
+                ',\t',
+                this[i].z.toFixed(precision),
                 suffix
             ].join('');
         }
