@@ -65,6 +65,14 @@
         context.stroke();
     }
 
+    function setStyle (style) {
+        for (var prop in style) {
+            if (style.hasOwnProperty(style) && context.hasOwnProperty(prop)) {
+                context[prop] = style[prop];
+            }
+        }
+    }
+
     function clear () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -96,7 +104,8 @@
         fill: fill,
         stroke: stroke,
         fillStroke: fillStroke,
-        clear: clear
+        clear: clear,
+        setStyle: setStyle
     };
 } (vectors));
 
