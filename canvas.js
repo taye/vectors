@@ -28,6 +28,23 @@
         canvas,
         context;
 
+    function Style (source) {
+        for (var prop in source) {
+            if (context.hasOwnProperty(prop)) {
+                this[prop] = source[prop];
+            }
+        }
+    }
+
+    Style.prototype = {
+        fill: true,
+        fillColor: 'rgba(0, 153, 238, 1)',
+
+        stroke: true,
+        strokeColor: 'rgba102, 225, 107, 1)',
+        strokeWidth: 4
+    };
+
     function trace (points, begin) {
         var i = 0;
 
@@ -67,8 +84,8 @@
 
     function setStyle (style) {
         for (var prop in style) {
-            if (style.hasOwnProperty(style) && context.hasOwnProperty(prop)) {
-                context[prop] = style[prop];
+            if (context.hasOwnProperty(prop)) {
+                context[prop] = typeof style[prop] === 'object'? style[prop].toString(): style[prop];
             }
         }
     }
@@ -105,6 +122,7 @@
         stroke: stroke,
         fillStroke: fillStroke,
         clear: clear,
+        Style: Style,
         setStyle: setStyle
     };
 } (vectors));
