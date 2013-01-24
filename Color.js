@@ -145,6 +145,10 @@
             ].join(', '), ")"].join('');
         },
 
+        toString: function () {
+            return this.rgba();
+        },
+
         fadeTo: function (c, steps) {
             steps = steps || 2;
 
