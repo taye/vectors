@@ -150,7 +150,7 @@
         },
 
         fadeTo: function (c, steps) {
-            steps = steps || 2;
+            steps = (steps || 10) - 1;
 
             var colors = [],
                 stepR = (this.r - c.r) / steps,
