@@ -83,11 +83,14 @@
         return Star(n / 2, 1, rotation);
     }
 
-    poly80 = Polygon(80);
-
     function Circle (radius) {
        return poly80.scale(radius || 1);
     }
+
+    document.addEventListener('DOMContentLoaded', function (event) {
+        poly80 = Polygon(80);
+    });
+
 
     vectors.star = Star;
     vectors.polygon = Polygon;
