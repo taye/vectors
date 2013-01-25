@@ -20,64 +20,48 @@
 (function (vectors) {
     'use strict';
 
-    function joinVectors (v1, v2, segLength) {
-        var joinVector = v2.minus(v1),
-            magnitude = joinVector.magnitude(),
-            numberOfPoints = magnitude / segLength,
+    function joinVectors (v1, v2, steps) {
+        var stepVector = v2.minus(v1).scale(1 / steps),
             interpolated = [],
             i;
 
-        for (i = 0; i < numberOfPoints; i++) {
+        for (i = 0; i < steps; i++) {
             interpolated.push(
-                v1.plus(joinVector.unitVector().scale(i * segLength)));
+                v1.plus(stepVector.scale(i)));
         }
         return interpolated;
     }
 
-    function joinScalars (s1, s2, segLength) {
-        var difference = s2 - s1,
-            numberOfPoints = difference / segLength,
-            step = (difference >= 0)? segLength: -segLength,
+    function joinScalars (s1, s2, steps) {
+        var stepValue = (s2 - s1) / steps,
             interpolated = [],
             i;
 
-        for (i = 0; i < numberOfPoints; i++) {
-            interpolated.push(s1 + i * step);
+        for (i = 0; i < steps; i++) {
+            interpolated.push(s1 + stepValue * i);
         }
         return interpolated;
     }
 
     function interpolate (vertices, steps) {
         var points = [],
-            pathLength = 0,
-            segmentLength,
             joiner,
             interpolated = [],
             i,
             last = vertices.length - 1;
 
         if (typeof vertices[0] === 'number') {
-            for (i = 0; i < last; i++) {
-                pathLength += vertices[i + 1] - (vertices[i] > vertices[i + 1]? vertices[i]: -vertices[i]);
-            }
             joiner = joinScalars;
         }
         else {
             if (!(vertices[0] instanceof Vector)) {
                 vertices = vertices.map(Vector);
             }
-
-            // Calculate the total length of the vertex sequence
-            for (i = 0; i < vertices.length - 1; i++) {
-                pathLength += vertices[i].distanceTo(vertices[i + 1]);
-            }
             joiner = joinVectors;
         }
 
-        segmentLength = pathLength / steps;
-
         for (i = 0; i < vertices.length - 1; i++) {
-            interpolated = interpolated.concat(joiner(vertices[i], vertices[i + 1], segmentLength));
+            interpolated = interpolated.concat(joiner(vertices[i], vertices[i + 1], steps));
         }
 
         interpolated.push(vertices[last]);
