@@ -3,6 +3,28 @@
 
     var Vector = vectors.Vector;
 
+    function fade (from, to, steps) {
+        from = typeof from === 'string'? Color.fromRgba(from): from;
+        to = typeof to === 'string'? Color.fromRgba(to): to;
+
+        steps = (steps || 10) - 1;
+
+        var colors = [],
+            stepR = (from.r - to.r) / steps,
+            stepG = (from.g - to.g) / steps,
+            stepB = (from.b - to.b) / steps,
+            stepA = (from.a - to.a) / steps;
+
+        for (var i = 0; i < steps; i++) {
+            colors.push(new Color(from.r - stepR * i,
+                                  from.g - stepG * i,
+                                  from.b - stepB * i,
+                                  from.a - stepA * i));
+        }
+        colors.push(c);
+        return colors;
+    }
+
     function Color (r, g, b, a) {
         if (!(this instanceof Color)) {
             return new Color(r, g, b, a);
@@ -150,22 +172,7 @@
         },
 
         fadeTo: function (c, steps) {
-            steps = (steps || 10) - 1;
-
-            var colors = [],
-                stepR = (this.r - c.r) / steps,
-                stepG = (this.g - c.g) / steps,
-                stepB = (this.b - c.b) / steps,
-                stepA = (this.a - c.a) / steps;
-
-            for (var i = 0; i < steps; i++) {
-                colors.push(new Color(this.r - stepR * i,
-                                      this.g - stepG * i,
-                                      this.b - stepB * i,
-                                      this.a - stepA * i));
-            }
-            colors.push(c);
-            return colors;
+            return fade(this, c, steps);
         }
     };
 
@@ -181,6 +188,7 @@
         return new Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255, rgba[3]);
     };
 
+    Color.fade = fade;
 
     vectors.Color = Color;
 }(window.vectors));
