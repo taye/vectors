@@ -47,6 +47,7 @@
         var points = [],
             joiner,
             interpolated = [],
+            stepsPerSegment = steps / vertices.length,
             i,
             last = vertices.length - 1;
 
@@ -61,7 +62,7 @@
         }
 
         for (i = 0; i < vertices.length - 1; i++) {
-            interpolated = interpolated.concat(joiner(vertices[i], vertices[i + 1], steps));
+            interpolated = interpolated.concat(joiner(vertices[i], vertices[i + 1], stepsPerSegment));
         }
 
         interpolated.push(vertices[last]);
