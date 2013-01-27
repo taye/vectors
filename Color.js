@@ -123,6 +123,15 @@
                              1 - this.b);
         },
 
+        average: function () {
+            return (this.r + this.g + this.b) / 3;
+        },
+
+        grayscale: function () {
+            var br = this.average();
+            return new Color(br, br, br, this.a);
+        },
+
         equals: function (c) {
             return this.r === c.r &&
                    this.g === c.g &&
