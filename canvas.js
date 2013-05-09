@@ -92,6 +92,10 @@
 
     function clear () {
         context.clearRect(0, 0, canvas.width, canvas.height);
+        if (vectors.canvas.clearColor) {
+            context.fillStyle = vectors.canvas.clearColor;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        }
     }
 
     function init (event) {
@@ -123,7 +127,8 @@
         fillStroke: fillStroke,
         clear: clear,
         Style: Style,
-        setStyle: setStyle
+        setStyle: setStyle,
+        clearColor: null
     };
 } (vectors));
 

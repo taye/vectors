@@ -96,41 +96,63 @@
         return this;
     };
 
-    VectorSet.prototype.toString = function (rowSize, precision, suffix) {
+    VectorSet.prototype.toString = function (rowSize, precision, format) {
         if (!this.length) {
             return '';
+        }
+
+        if (rowSize === null || rowSize === undefined) {
+            rowSize = 16;
         }
 
         if (precision === null || precision === undefined) {
             precision = 16;
         }
+        var vPrefix = '',
+            vSuffix = '',
+            sSuffix = '';
+
+        if (format === 'f') {
+            sSuffix = 'f';
+        }
+        else if (format === 'c-array') {
+            vPrefix = '{';
+            vSuffix = '},';
+        }
 
         var string = [
+                vPrefix,
                 this[0].x.toFixed(precision),
-                suffix,
+                sSuffix,
                 ',\t',
                 this[0].y.toFixed(precision),
-                suffix
+                sSuffix,
+                ',\t',
+                this[0].z.toFixed(precision),
+                sSuffix,
+                vSuffix
             ].join(''),
             i;
 
         for (i = 1; i < this.length; i++) {
-            string += ',\t';
-            string += '\n';
-
             if (rowSize && i % rowSize === 0) {
                 string += '\n';
             }
+            else {
+                string += ',\t';
+            }
 
             string += [
+                vPrefix,
                 this[i].x.toFixed(precision),
-                suffix,
+                sSuffix,
                 ',\t',
                 this[i].y.toFixed(precision),
-                suffix,
+                sSuffix,
                 ',\t',
                 this[i].z.toFixed(precision),
-                suffix
+                sSuffix,
+                vSuffix
             ].join('');
         }
         return string;
@@ -142,4 +164,3 @@
         window: window
     };
 } (window));
-

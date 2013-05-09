@@ -185,6 +185,13 @@
         running: function () {
             return running;
         },
-        killall: killall
+        killall: killall,
+
+        interval: function (newValue) {
+            if (typeof newValue === 'number') {
+                interval = newValue;
+            }
+            return interval;
+        }
     };
 }(vectors));
